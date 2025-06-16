@@ -8,12 +8,12 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.alert-api.rule=Host(`ryan-jasinski.com`) && PathPrefix(`/api`)"
-      - "traefik.http.routers.alert-api.entrypoints=websecure"
-      - "traefik.http.routers.alert-api.tls=true"
-      - "traefik.http.routers.alert-api.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.alert-api.middlewares=strip-api@file"
-      - "traefik.http.services.alert-api.loadbalancer.server.port=5000"
+      - "traefik.http.routers.alert-api-secret.rule=Host(`ryan-jasinski.com`) && PathPrefix(`/secret`)"
+      - "traefik.http.routers.alert-api-secret.entrypoints=websecure"
+      - "traefik.http.routers.alert-api-secret.tls=true"
+      - "traefik.http.routers.alert-api-secret.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.alert-api-secret.middlewares=strip-secret-prefix@file"
+      - "traefik.http.services.alert-api-service.loadbalancer.server.port=5000"
     networks:
       - web
     restart: unless-stopped
