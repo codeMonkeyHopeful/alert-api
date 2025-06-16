@@ -35,17 +35,12 @@ def register_blueprints(app, routes_dir=None, api_prefix="/api"):
 
 
 def setup_logging(app):
-    flask_env = os.environ.get("FLASK_ENV", "production").lower()
-
-    if flask_env == "production":
-        log_level = logging.CRITICAL + 1
-    else:
-        log_level_name = os.environ.get("LOG_LEVEL", "DEBUG").upper()
-        log_level = getattr(logging, log_level_name, logging.DEBUG)
+    log_level_name = app.config.get("LOG_LEVEL", "WARNING").upper()
+    log_level = getattr(logging, log_level_name, logging.WARNING)
 
     app.logger.setLevel(log_level)
 
-    # Add a StreamHandler if no handlers exist
+    # Add a console handler if none exist
     if not app.logger.handlers:
         handler = logging.StreamHandler(sys.stdout)
         handler.setLevel(log_level)
@@ -55,16 +50,35 @@ def setup_logging(app):
         handler.setFormatter(formatter)
         app.logger.addHandler(handler)
 
-    app.logger.info(
-        f"Logging set to {logging.getLevelName(log_level)} for FLASK_ENV={flask_env}"
-    )
+    app.logger.info(f"Logging configured at {log_level_name} level")
+
+
+def get_env(app):
+    # Choose config based on FLASK_ENV
+    env = os.getenv("FLASK_ENV", "production").lower()
+
+    if env == "development":
+        from .config import DevelopmentConfig
+
+        app.config.from_object(DevelopmentConfig)
+    elif env == "testing":
+        from .config import TestingConfig
+
+        app.config.from_object(TestingConfig)
+    else:
+        from .config import ProductionConfig
+
+        app.config.from_object(ProductionConfig)
+
+    app.logger.info(f"Environment set to {env.upper()}")
 
 
 def create_app():
 
     app = Flask(__name__)
 
-    # Load configuration from environment variables or a .env file
+    get_env(app)  # Load environment-specific configuration
+
     setup_logging(app)
     # app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "default-secret")
 
