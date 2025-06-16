@@ -11,7 +11,7 @@ load_dotenv()
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
-def register_blueprints(app, routes_dir=None, api_prefix="/api"):
+def register_blueprints(app, routes_dir=None, api_prefix=""):
     if routes_dir is None:
         # Automatically find app/routes/ relative to this file
         base_dir = os.path.dirname(os.path.abspath(__file__))
