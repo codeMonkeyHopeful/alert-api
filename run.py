@@ -11,7 +11,6 @@ if __name__ == "__main__":
     port = os.environ.get("SERVER_PORT", 5000)
     host = os.environ.get("HOST", "0.0.0.0")
 
-    for key, value in app.config.items():
-        print(f"{key} = {value}")
+    app.logger.info(f"Starting server on {host}:{port}")
 
     app.run(host=host, port=port)
