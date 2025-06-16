@@ -1,25 +1,25 @@
-
-version: '3.9'
-
-
+version: "3.9"
 
 services:
-
   web:
-
     build: .
-
-    ports:
-
-      - "5000:5000"
-
+    container_name: web
+    expose:
+      - "5000" # Only exposed inside Docker network
     env_file:
-
       - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alert-api.rule=Host(`ryan-jasinski.com`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.alert-api.entrypoints=websecure"
+      - "traefik.http.routers.alert-api.tls=true"
+      - "traefik.http.routers.alert-api.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.alert-api.middlewares=strip-api@file"
+      - "traefik.http.services.alert-api.loadbalancer.server.port=5000"
+    networks:
+      - web
+    restart: unless-stopped
 
-    volumes:
-
-      - .:/app
-
-    command: flask run --host=0.0.0.0 --debug
-
+networks:
+  web:
+    external: true
