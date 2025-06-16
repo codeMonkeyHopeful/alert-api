@@ -9,9 +9,9 @@ app = create_app()
 if __name__ == "__main__":
 
     port = os.environ.get("SERVER_PORT", 5000)
-    host = os.environ.get("HOST", 5000)
+    host = os.environ.get("HOST", "0.0.0.0")
 
     for key, value in app.config.items():
         print(f"{key} = {value}")
 
-    app.run(host="0.0.0.0", port=port)
+    app.run(host=host, port=port)
