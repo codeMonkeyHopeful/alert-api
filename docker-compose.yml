@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    container_name: web
+    container_name: alert-api
     expose:
       - "5000" # Only exposed inside Docker network
     env_file:
