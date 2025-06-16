@@ -4,8 +4,6 @@ __pycache__
 *.pyd
 env/
 venv/
-.git
-.gitignore
 docker-compose.dev.yml
 
 *.pyc
@@ -14,8 +12,6 @@ docker-compose.dev.yml
 *.swp
 *.swo
 .env
-.git
-.gitignore
 .vscode
 *.sqlite3
 instance/
