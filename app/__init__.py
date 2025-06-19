@@ -4,6 +4,7 @@ import os
 import sys
 import importlib
 import logging
+from datetime import timedelta
 
 load_dotenv()
 
@@ -76,6 +77,16 @@ def get_env(app):
 def create_app():
 
     app = Flask(__name__)
+
+    jwt_secret = os.getenv("JWT_SECRET_KEY")
+    if not jwt_secret:
+        raise RuntimeError("JWT_SECRET_KEY is not set in environment variables.")
+    app.config["JWT_SECRET_KEY"] = jwt_secret
+    app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+    app.config["JWT_HEADER_NAME"] = "Authorization"
+    app.config["JWT_HEADER_TYPE"] = "Bearer"
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
+    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
     get_env(app)  # Load environment-specific configuration
 
