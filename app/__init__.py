@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, jsonify
 from dotenv import load_dotenv
 import os
 import sys
 import importlib
 import logging
 from datetime import timedelta
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended.exceptions import JWTExtendedException
 
 load_dotenv()
 
@@ -87,6 +89,12 @@ def create_app():
     app.config["JWT_HEADER_TYPE"] = "Bearer"
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+
+    jwt = JWTManager(app)
+
+    @app.errorhandler(JWTExtendedException)
+    def handle_jwt_errors(e):
+        return jsonify({"msg": str(e)}), 401
 
     get_env(app)  # Load environment-specific configuration
 
