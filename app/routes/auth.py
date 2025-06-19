@@ -39,7 +39,7 @@ def login():
 
     # Simulate DB lookup
     if username != fake_user["username"]:
-        return jsonify({"msg": "Unauthorized"}), 401
+        return jsonify({"msg": "Not Found"}), 404
 
     # Check password using bcrypt
     if not check_password(password, fake_user["password"]):

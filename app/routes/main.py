@@ -11,7 +11,7 @@ def main():
 
     return jsonify(
         {
-            "status": "ok",
+            "status": "API is running",
             "current_time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         }
     )
