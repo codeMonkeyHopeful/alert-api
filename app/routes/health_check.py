@@ -13,7 +13,3 @@ def health():
 
 def get_blueprint():
     return health_check, route_prefix
-    """
-    Returns the health check response.
-    """
-    return jsonify({"status": "ok"}), 200
