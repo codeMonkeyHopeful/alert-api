@@ -80,7 +80,7 @@ def create_app():
 
     app = Flask(__name__)
 
-    jwt_secret = os.getenv("JWT_SECRET_KEY")
+    jwt_secret = os.getenv("JWT_SECRET_KEY", None)
     if not jwt_secret:
         raise RuntimeError("JWT_SECRET_KEY is not set in environment variables.")
     app.config["JWT_SECRET_KEY"] = jwt_secret
