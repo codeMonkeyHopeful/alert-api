@@ -1,19 +1,21 @@
 from flask import Blueprint, jsonify
+import datetime
 
-health_check = Blueprint("health", __name__)
+bp = Blueprint("health", __name__)
 
 route_prefix = "/health"
 
 
-@health_check.route("/", methods=["GET"])
+@bp.route("/", methods=["GET"])
 def health():
 
-    return jsonify({"status": "ok"})
+    return jsonify(
+        {
+            "status": "ok",
+            "current_time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        }
+    )
 
 
 def get_blueprint():
-    return health_check, route_prefix
-    """
-    Returns the health check response.
-    """
-    return jsonify({"status": "ok"}), 200
+    return bp, route_prefix

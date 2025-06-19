@@ -8,7 +8,7 @@ ENV FLASK_APP=run.py
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -r dev-requirements.txt
 
 # Copy code for live reload (mounting in compose will override anyway)
 COPY . .
