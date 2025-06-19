@@ -53,9 +53,12 @@ def login():
 @bp.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
 def refresh():
-    current_user_id = get_jwt_identity()
-    new_access_token = create_access_token(identity=current_user_id)
-    return jsonify(access_token=new_access_token)
+    try:
+        user_id = get_jwt_identity()
+        new_token = create_access_token(identity=user_id)
+        return jsonify(access_token=new_token)
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 401
 
 
 def get_blueprint():
